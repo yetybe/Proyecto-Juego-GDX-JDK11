@@ -201,7 +201,7 @@ public class PantallaJuego implements Screen {
         }  
     }
 
-    private void dibujarPantalla() {
+    public void dibujarPantalla() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update(); 
         batch.setProjectionMatrix(camera.combined);

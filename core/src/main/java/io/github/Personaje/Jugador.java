@@ -167,6 +167,7 @@ public class Jugador extends Entidad {
     public float getVelMax() { return this.velocidadMax;}
     public float getCadenciaAtaque() { return cadenciaAtaque; }
     public Sound getSonidoHerido() { return sonidoHerido;}
+    public EstrategiaDisparo getArma() {return armaActual;}
     
     public void setCadenciaAtaque(float cadencia) { this.cadenciaAtaque = cadencia; }
     public void setDañoAtaque(int dmg) { dañoAtaque = dmg;}
