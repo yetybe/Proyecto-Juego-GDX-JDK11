@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.Main.SpaceNavigation;
 import io.github.Personaje.Jugador;
-
+import io.github.Strat.*;
 
 public class PantallaSubirLVL implements Screen {
 
@@ -29,20 +29,13 @@ public class PantallaSubirLVL implements Screen {
 	@Override
     public void render(float delta) {
         
-        // 1. EFECTO DE PAUSA (Opcional pero muy visual)
-        // En lugar de borrar el fondo de azul, dibujamos la partida pausada atrás.
-        // Le pasamos delta 0 para que nada se mueva.
         pantallaJuego.render(0f); 
-
-        // 2. CONFIGURAR LA CÁMARA PARA LOS TEXTOS
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
-        // 3. DIBUJAR LA INTERFAZ DE MEJORAS
         game.getBatch().begin();
         
-        // Ajusta las coordenadas (X, Y) según cómo se vea en tu monitor
-        game.getFont().getData().setScale(2f); // Hacemos la letra más grande
+        game.getFont().getData().setScale(2f); 
         game.getFont().draw(game.getBatch(), "¡NIVEL AUMENTADO!", 400, 600);
         
         game.getFont().getData().setScale(1.5f);
@@ -52,10 +45,12 @@ public class PantallaSubirLVL implements Screen {
         game.getFont().draw(game.getBatch(), "[2] Aumentar Vida Máxima (+2)", 400, 350);
         game.getFont().draw(game.getBatch(), "[3] Aumentar Velocidad (+0.25)", 400, 300);
         game.getFont().draw(game.getBatch(), "[4] Aumentar Vel. de Ataque (-0.05s)", 400, 250);
+        if (pjJugador.getLvl() % 5 == 0) {
+            game.getFont().draw(game.getBatch(), "[5] Mejorar Arma: ESCOPETA", 400, 200);
+        }
         
         game.getBatch().end();
 
-        // 4. LÓGICA DE SELECCIÓN (Teclas 1, 2 y 3)
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
             
             pjJugador.setDañoAtaque(pjJugador.getDañoAtaque() + 5);
@@ -64,7 +59,6 @@ public class PantallaSubirLVL implements Screen {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
             
             pjJugador.setVidaMax(pjJugador.getVidaMax() + 2);
-            // Curamos al jugador al subir de vida máxima como premio
             pjJugador.setVidaActual(pjJugador.getVidaMax()); 
             volverAlJuego();
             
@@ -75,16 +69,21 @@ public class PantallaSubirLVL implements Screen {
         
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
 	    
-			// Le restamos 0.05 segundos al tiempo de disparo
 			float nuevaCadencia = pjJugador.getCadenciaAtaque() - 0.05f;
 	    
-			// Ponemos un límite para que no baje de 0.1 segundos (para que no dispare infinito y rompa el juego)
+			// límite para que no baje de 0.1 segundos (para que no dispare infinito y rompa el juego)
 			if (nuevaCadencia < 0.1f) {
 				nuevaCadencia = 0.1f;
 			}
 	    
 			pjJugador.setCadenciaAtaque(nuevaCadencia);
 			volverAlJuego();
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
+		    // Validamos que realmente sea un nivel múltiplo de 5 para evitar trampas
+		    if (pjJugador.getLvl() % 5 == 0) {
+		        pjJugador.setEstrategiaDisparo(new DisparoEscopeta());
+		        volverAlJuego();
+		    }
 		}
     }
 
