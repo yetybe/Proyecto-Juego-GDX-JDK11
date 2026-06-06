@@ -1,6 +1,7 @@
 package io.github.Personaje;
 
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import io.github.Pantallas.PantallaSubirLVL;
 import io.github.Pantallas.PantallaJuego;
+import io.github.Strat.*;
 
 
 public class Jugador extends Entidad {
@@ -25,6 +27,7 @@ public class Jugador extends Entidad {
     private int lvlJugador;
     private int lvlCap;
     private boolean godMode = false;
+    private EstrategiaDisparo armaActual;
     
     public Jugador(int x, int y, Texture tx, Texture txBala,Sound sonidoHerido , Sound soundBala) {
     	
@@ -41,6 +44,7 @@ public class Jugador extends Entidad {
     	this.soundBala = soundBala;
     	this.sonidoHerido = sonidoHerido;
     	this.txBala = txBala;
+    	this.armaActual = new DisparoNormal();
    
     	
     	this.spr.setPosition(x, y);
@@ -58,7 +62,7 @@ public class Jugador extends Entidad {
         float x = spr.getX();
         float y = spr.getY();
 
-        // 1. MOVIMIENTO (Usando la variable protegida velocidadMax de Entidad)
+        // 1. MOVIMIENTO
         if (Gdx.input.isKeyPressed(Input.Keys.A)) x -= velocidadMax;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) x += velocidadMax;
         if (Gdx.input.isKeyPressed(Input.Keys.S)) y -= velocidadMax;     
@@ -70,16 +74,18 @@ public class Jugador extends Entidad {
         if (y < 0) y = 0;
         if (y + spr.getHeight() > Gdx.graphics.getHeight()) y = Gdx.graphics.getHeight() - spr.getHeight();
         
-        // Aplicar la nueva posición
         spr.setPosition(x, y);
 
-        // 3. DISPARO CON MOUSE
+        // 3. DISPARO
         temporizadorDisparo += Gdx.graphics.getDeltaTime();
 
-        // Si el cronómetro supera nuestra cadencia, disparamos y reiniciamos el reloj
         if (temporizadorDisparo >= cadenciaAtaque) {
-        	dispararBala(juego);
-        	temporizadorDisparo = 0f; // Reiniciamos el contador
+            float origenX = spr.getX() + spr.getWidth() / 2;
+            float origenY = spr.getY() + spr.getHeight() / 2;
+            
+            armaActual.disparar(juego, origenX, origenY, txBala);
+            soundBala.play();
+            temporizadorDisparo = 0f; 
         }
         // 4. TEMPORIZADOR DE INMUNIDAD
         if (herido) {
@@ -89,52 +95,21 @@ public class Jugador extends Entidad {
             }
         }
         
-        //
-    }
-    
-    private void dispararBala(PantallaJuego juego) {
-        // A. Capturar la posición del mouse en la pantalla
-        Vector3 posicionMouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        
-        // B. Traducir esa posición al mundo del juego (CRÍTICO)
-        juego.getCamera().unproject(posicionMouse);
-        
-        // C. Calcular el centro del jugador (de donde sale la bala)
-        float origenX = spr.getX() + spr.getWidth() / 2;
-        float origenY = spr.getY() + spr.getHeight() / 2;
-        
-        // D. Calcular la distancia (Deltas)
-        float dx = posicionMouse.x - origenX;
-        float dy = posicionMouse.y - origenY;
-        
-        // E. Obtener el ángulo con Arco Tangente
-        float angulo = (float) Math.atan2(dy, dx);
-        
-        // F. Aplicar Seno y Coseno para obtener las velocidades finales
-        float velocidadBala = 400f; 
-        float velX = (float) Math.cos(angulo) * velocidadBala;
-        float velY = (float) Math.sin(angulo) * velocidadBala;
-        
-        // G. Crear y disparar la bala
-        Bullet bala = new Bullet(origenX - 5, origenY - 5, velX, velY, txBala, 10, 30);
-        juego.agregarBala(bala);
-        soundBala.play();
-    }
+    }  //
+
     
     public void draw(SpriteBatch batch) {
-        if (muerto) return; // No dibujamos nada si está muerto
+        if (muerto) return;
 
         if (!herido) {
-            // Dibujado normal
             spr.draw(batch);
         } else {
-            // Efecto de parpadeo usando el residuo de la división
             if (tiempoHerido % 10 > 5) {
                 spr.draw(batch); 
             }
         }
     }
-      
+
     public void  setPosicionSpr(int x , int y){ 
     	if (godMode) return;
     	float nuevaXpos = spr.getX() + x;
@@ -198,4 +173,7 @@ public class Jugador extends Entidad {
 	public void setVidaMax(int Puntosvida) {vidaMax = Puntosvida;}
 	public void setVidaActual(int totalVida) {vidaActual = totalVida;}
 	public void setVelocidadMax(float nuevaVel) {this.velocidadMax = nuevaVel;}
+	public void setEstrategiaDisparo(EstrategiaDisparo nuevaArma) {
+	    this.armaActual = nuevaArma;
+	}
 }

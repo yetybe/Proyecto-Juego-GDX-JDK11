@@ -23,15 +23,12 @@ public class Bullet {
 	        
 	        spr.setBounds(x, y, ancho, alto);
 	    }
-	 // Le pasamos el delta temporal
-	    public void update(float delta) {
+	 	    public void update(float delta) {
 	        
-	        // 1. Movimiento constante sin importar los FPS
 	        float nuevaX = spr.getX() + (xSpeed * delta);
 	        float nuevaY = spr.getY() + (ySpeed * delta);
 	        spr.setPosition(nuevaX, nuevaY);
 	        
-	        // 2. Limpieza de memoria (¡Tu lógica intacta y compactada!)
 	        if (spr.getX() < 0 || spr.getX() + spr.getWidth() > Gdx.graphics.getWidth() ||
 	            spr.getY() < 0 || spr.getY() + spr.getHeight() > Gdx.graphics.getHeight()) {
 	            
