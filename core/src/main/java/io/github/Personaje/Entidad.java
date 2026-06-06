@@ -14,16 +14,14 @@ public abstract class Entidad {
     protected float velocidadMax;
     protected int dañoAtaque;
     protected Sprite spr;
-    protected Sound sonidoHerido;
     protected boolean muerto;
     
-    public Entidad(int vidaMax, float velocidadMax, int dañoAtaque, Sprite spr, Sound sonidoHerido) {
+    public Entidad(int vidaMax, float velocidadMax, int dañoAtaque, Sprite spr) {
         this.vidaMax = vidaMax;
         this.vidaActual = vidaMax; 
         this.velocidadMax = velocidadMax;
         this.dañoAtaque = dañoAtaque;
         this.spr = spr;
-        this.sonidoHerido = sonidoHerido;
         this.muerto = false; 
     }
     
@@ -37,10 +35,6 @@ public abstract class Entidad {
         // Restamos la vida
         vidaActual -= dañoRecibido;
         
-        // Reproducimos el sonido que le asignamos al nacer
-        if (sonidoHerido != null) {
-            sonidoHerido.play();
-        }
 
         // Verificamos si este golpe fue el golpe de gracia
         if (vidaActual <= 0) {

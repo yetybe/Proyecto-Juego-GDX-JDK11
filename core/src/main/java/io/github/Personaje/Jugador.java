@@ -19,6 +19,7 @@ public class Jugador extends Entidad {
     private int tiempoHerido;
     private Sound soundDañoAtaque;
     private Sound soundBala;
+    private Sound sonidoHerido;
     private Texture txBala;
     private int expJugador;
     private int lvlJugador;
@@ -28,7 +29,7 @@ public class Jugador extends Entidad {
     public Jugador(int x, int y, Texture tx, Texture txBala,Sound sonidoHerido , Sound soundBala) {
     	
     	//Vida Maxima(0) , Velocidad Maxima(1) y Daño Ataque(3)
-    	super(10,1.5f,2, new Sprite(tx),sonidoHerido);
+    	super(10,1.5f,2, new Sprite(tx));
     	
     	expJugador = 0;
     	lvlJugador = 1;
@@ -38,6 +39,7 @@ public class Jugador extends Entidad {
     	this.herido = false;
     	this.tiempoHeridoMax = 50;
     	this.soundBala = soundBala;
+    	this.sonidoHerido = sonidoHerido;
     	this.txBala = txBala;
    
     	
@@ -114,7 +116,7 @@ public class Jugador extends Entidad {
         float velY = (float) Math.sin(angulo) * velocidadBala;
         
         // G. Crear y disparar la bala
-        Bullet bala = new Bullet(origenX - 5, origenY - 5, velX, velY, txBala);
+        Bullet bala = new Bullet(origenX - 5, origenY - 5, velX, velY, txBala, 10, 30);
         juego.agregarBala(bala);
         soundBala.play();
     }
@@ -160,6 +162,9 @@ public class Jugador extends Entidad {
         if (godMode || herido || muerto) return;
         
         super.recibirDaño(dañoRecibido); 
+        if(this.sonidoHerido != null) {
+        	sonidoHerido.play();
+        }
         
         this.herido = true;
         this.tiempoHerido = this.tiempoHeridoMax;
@@ -186,8 +191,9 @@ public class Jugador extends Entidad {
     public int getLvlCap() { return lvlCap;}
     public float getVelMax() { return this.velocidadMax;}
     public float getCadenciaAtaque() { return cadenciaAtaque; }
+    public Sound getSonidoHerido() { return sonidoHerido;}
+    
     public void setCadenciaAtaque(float cadencia) { this.cadenciaAtaque = cadencia; }
- 
     public void setDañoAtaque(int dmg) { dañoAtaque = dmg;}
 	public void setVidaMax(int Puntosvida) {vidaMax = Puntosvida;}
 	public void setVidaActual(int totalVida) {vidaActual = totalVida;}

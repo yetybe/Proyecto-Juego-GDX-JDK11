@@ -15,11 +15,13 @@ public class Bullet {
 	private boolean destroyed = false;
 	private Sprite spr;
 	    
-	    public Bullet(float x, float y, float xSpeed, float ySpeed, Texture tx) {
+	    public Bullet(float x, float y, float xSpeed, float ySpeed, Texture tx, int ancho , int alto) {
 	    	spr = new Sprite(tx);
 	    	spr.setPosition(x, y);
 	        this.xSpeed = xSpeed;
 	        this.ySpeed = ySpeed;
+	        
+	        spr.setBounds(x, y, ancho, alto);
 	    }
 	 // Le pasamos el delta temporal
 	    public void update(float delta) {

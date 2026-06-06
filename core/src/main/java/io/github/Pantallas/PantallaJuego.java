@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import io.github.ConstructoresEnemigos.BuilderDistancia;
 import io.github.ConstructoresEnemigos.BuilderEnemigo;
 import io.github.ConstructoresEnemigos.BuilderMelee;
 import io.github.Main.SpaceNavigation;
@@ -40,6 +41,10 @@ public class PantallaJuego implements Screen {
 	// Recursos para la horda
 	private Texture txEnemigoMelee;
     private Sound sonidoDañoEnemigoMelee;
+    
+    private Texture txtEnemigoDistancia;
+    private Texture txtBalaEnemiga;
+    private ArrayList<Bullet> balasEnemigas = new ArrayList();
     
 	private  ArrayList<BuilderEnemigo> listaConstructoresEnemigos = new ArrayList<>();
 	private  ArrayList<Enemigo> hordaEnemigos = new ArrayList<>();
@@ -79,9 +84,11 @@ public class PantallaJuego implements Screen {
 		//Guardamos los Sprite y Sonidos de los enemigos
 		txEnemigoMelee = new Texture(Gdx.files.internal("MeleeEnemy.png"));       
 		sonidoDañoEnemigoMelee =Gdx.audio.newSound(Gdx.files.internal("MeleeEnemy-DamageSound.mp3"));
-		this.listaConstructoresEnemigos.add(new BuilderMelee(txEnemigoMelee, sonidoDañoEnemigoMelee));
-
-		gameMusic.setLooping(true);
+		
+		txtEnemigoDistancia = new Texture(Gdx.files.internal("EnemigoDistancia.png"));
+		txtBalaEnemiga = new Texture(Gdx.files.internal("BulletEnemiga.png"));
+		this.listaConstructoresEnemigos.add(new BuilderMelee(txEnemigoMelee, sonidoDañoEnemigoMelee ));
+		this.listaConstructoresEnemigos.add(new BuilderDistancia(txtEnemigoDistancia, txtBalaEnemiga, Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))));
 		gameMusic.setVolume(0.5f);
 		gameMusic.play();
 		
@@ -94,9 +101,6 @@ public class PantallaJuego implements Screen {
 			    Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),   // 5. Sound sonidoHerido
 			    Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")) // 6. Sound soundBala
 			);
-        //crear enemigos
- 
-		
 }    
 	
 	public void dibujaEncabezado() {
@@ -152,9 +156,15 @@ public class PantallaJuego implements Screen {
         }
         
         jugadorPersonaje.update(this);
+        
         for (Bullet bala : balas) {
             bala.update(delta);
         }
+        
+        for (Bullet bala : balasEnemigas) {
+            bala.update(delta);
+        }
+        
         for (Enemigo enemigo : hordaEnemigos) {
             enemigo.update(this);
         }
@@ -163,7 +173,7 @@ public class PantallaJuego implements Screen {
     private void gestionarColisionesYLimpieza() {
         // Primero resolvemos quién se hizo daño
         balaColsionEnemigo(balas, hordaEnemigos);
-        enemigoCollisionJugador(hordaEnemigos, jugadorPersonaje);
+        balaEnemigaColisionJugador();
         
         // Se eliminan los cadáveres de los enemigos 
         Iterator<Enemigo> iterEnemigos = hordaEnemigos.iterator();
@@ -182,6 +192,13 @@ public class PantallaJuego implements Screen {
         		iterBalas.remove();
         	}
         }   
+        
+        Iterator<Bullet> iterEnemigasBullet = balasEnemigas.iterator();
+        while(iterEnemigasBullet.hasNext()){
+        	if(iterEnemigasBullet.next().isDestroyed()) {
+        		iterEnemigasBullet.remove();
+        	}
+        }  
     }
 
     private void dibujarPantalla() {
@@ -197,6 +214,10 @@ public class PantallaJuego implements Screen {
             enemigo.draw(batch);
         }
         for (Bullet bala : balas) {
+            bala.draw(batch);
+        }
+        
+        for (Bullet bala : balasEnemigas) {
             bala.draw(batch);
         }
         
@@ -256,12 +277,10 @@ public class PantallaJuego implements Screen {
     }
 	
 	public void balaColsionEnemigo(ArrayList<Bullet> balas , ArrayList<Enemigo> enemigos  ){
-        for (Bullet bala : balas) {
+        
+		for (Bullet bala : balas) {
             for (Enemigo enemigo : hordaEnemigos) { 
-                
-                
-                if (bala.getArea().overlaps(enemigo.getArea())) {
-                    
+                if (bala.getArea().overlaps(enemigo.getArea())) {  
                     enemigo.recibirDaño(jugadorPersonaje.getDañoAtaque()); 
                     explosionSound.play();
                     bala.setDestroyed(true);
@@ -270,18 +289,21 @@ public class PantallaJuego implements Screen {
         }	
 	}
 	
-	public void enemigoCollisionJugador(ArrayList<Enemigo> enemigos , Jugador pjJugador){
-		for (Enemigo enemigo : hordaEnemigos) { 
-                if (enemigo.getArea().overlaps(pjJugador.getArea())) {
-                    
-                    enemigo.atacar(jugadorPersonaje); 
-                    sonidoDañoEnemigoMelee.play();
-                }
-           }
-	}	
-
+	private void balaEnemigaColisionJugador() {
+	    for (Bullet bala : balasEnemigas) {
+	        if (bala.getArea().overlaps(jugadorPersonaje.getArea())) {
+	            jugadorPersonaje.recibirDaño(2); 	            
+	            bala.setDestroyed(true);
+	        }
+	    }
+	}
+	
     public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);
+    }
+    
+    public boolean agregarBalaEnemiga(Bullet bb) {
+    	return balasEnemigas.add(bb);
     }
     
     public OrthographicCamera getCamera() {
