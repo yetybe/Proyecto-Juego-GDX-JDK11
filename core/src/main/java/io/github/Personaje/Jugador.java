@@ -27,7 +27,7 @@ public class Jugador extends Entidad {
     private int lvlJugador;
     private int lvlCap;
     private boolean godMode = false;
-    private EstrategiaDisparo armaActual;
+    private ModoDisparo armaActual;
     
     public Jugador(int x, int y, Texture tx, Texture txBala,Sound sonidoHerido , Sound soundBala) {
     	
@@ -167,14 +167,14 @@ public class Jugador extends Entidad {
     public float getVelMax() { return this.velocidadMax;}
     public float getCadenciaAtaque() { return cadenciaAtaque; }
     public Sound getSonidoHerido() { return sonidoHerido;}
-    public EstrategiaDisparo getArma() {return armaActual;}
+    public ModoDisparo getArma() {return armaActual;}
     
     public void setCadenciaAtaque(float cadencia) { this.cadenciaAtaque = cadencia; }
     public void setDañoAtaque(int dmg) { dañoAtaque = dmg;}
 	public void setVidaMax(int Puntosvida) {vidaMax = Puntosvida;}
 	public void setVidaActual(int totalVida) {vidaActual = totalVida;}
 	public void setVelocidadMax(float nuevaVel) {this.velocidadMax = nuevaVel;}
-	public void setEstrategiaDisparo(EstrategiaDisparo nuevaArma) {
+	public void setEstrategiaDisparo(ModoDisparo nuevaArma) {
 	    this.armaActual = nuevaArma;
 	}
 }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import io.github.Personaje.Bullet;
 import io.github.Pantallas.PantallaJuego;
 
-public class DisparoEscopeta implements EstrategiaDisparo {
+public class DisparoEscopeta implements ModoDisparo {
 
     @Override
     public void disparar(PantallaJuego juego, float origenX, float origenY, Texture txBala) {
