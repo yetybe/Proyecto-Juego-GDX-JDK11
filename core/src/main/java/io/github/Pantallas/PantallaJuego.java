@@ -226,46 +226,7 @@ public class PantallaJuego implements Screen {
             dispose(); 
         }
     }
-	
-    /*
-	private void generarEnemigoAleatorio() {
-        Random r = new Random();
-        int lado = r.nextInt(4); // 0: Arriba, 1: Abajo, 2: Izquierda, 3: Derecha
-        
-        int x = 0;
-        int y = 0;
-        int anchoPantalla = Gdx.graphics.getWidth();
-        int altoPantalla = Gdx.graphics.getHeight();
-        int margen = 50; // Distancia extra fuera de la pantalla
-        
-        switch(lado) {
-            case 0: // Arriba
-                x = r.nextInt(anchoPantalla);
-                y = altoPantalla + margen;
-                break;
-            case 1: // Abajo
-                x = r.nextInt(anchoPantalla);
-                y = -margen;
-                break;
-            case 2: // Izquierda
-                x = -margen;
-                y = r.nextInt(altoPantalla);
-                break;
-            case 3: // Derecha
-                x = anchoPantalla + margen;
-                y = r.nextInt(altoPantalla);
-                break;
-        }
-        
-        int indiceAleatorio = r.nextInt(listaConstructoresEnemigos.size());
-        BuilderEnemigo constructorElegido = listaConstructoresEnemigos.get(indiceAleatorio);
-        
-        Enemigo nuevoEnemigo = constructorElegido.setPosicion(x, y).build();       
-        hordaEnemigos.add(nuevoEnemigo);
-
-    }
-	*/
-    
+	 
     private void generarSiguienteHorda() {
         ronda++; 
         TemplateHorda hordaAct;
@@ -273,11 +234,15 @@ public class PantallaJuego implements Screen {
         if (ronda % 10 == 0) {
             hordaAct = new HordaJefe1(); 
         } else {
-            Random r = new Random();
-            if (r.nextBoolean()) {
-                hordaAct = new Horda1();
-            } else {
-                hordaAct = new Horda2();
+        	Random r = new Random();
+            int seleccion = r.nextInt(4); // Genera un número entre 0, 1, 2, 3
+            
+            switch (seleccion) {
+                case 0: hordaAct = new Horda1(); break;
+                case 1: hordaAct = new Horda2(); break;
+                case 2: hordaAct = new Horda3(); break;
+                case 3: hordaAct = new Horda4(); break;
+                default: hordaAct = new Horda1(); break;
             }
         }
 
