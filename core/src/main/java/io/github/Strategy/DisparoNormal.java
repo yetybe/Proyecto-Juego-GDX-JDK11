@@ -1,4 +1,4 @@
-package io.github.Strat;
+package io.github.Strategy;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import io.github.Pantallas.PantallaSubirLVL;
+import io.github.Strategy.*;
 import io.github.Pantallas.PantallaJuego;
-import io.github.Strat.*;
 
 
 public class Jugador extends Entidad {
