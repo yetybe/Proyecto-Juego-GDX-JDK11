@@ -29,16 +29,12 @@ public abstract class Entidad {
     public void draw(SpriteBatch batch) {spr.draw(batch);}
     
     public void recibirDaño(int dañoRecibido) {
-        // Si ya está muerto, ignoramos el daño
         if (muerto) return;
 
-        // Restamos la vida
         vidaActual -= dañoRecibido;
-        
 
-        // Verificamos si este golpe fue el golpe de gracia
         if (vidaActual <= 0) {
-            vidaActual = 0; // Para que no queden números negativos
+            vidaActual = 0;
             muerto = true;
         }
     }

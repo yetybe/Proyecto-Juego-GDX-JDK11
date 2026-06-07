@@ -64,8 +64,6 @@ public class EnemigoMelee extends Enemigo{
         if (this.getSonidoAtq() != null) {
             this.getSonidoAtq().play();
         }
-        // Efecto de empuje
-        pjJugador.setPosicionSpr(50, 50);
 	}
 	
 }

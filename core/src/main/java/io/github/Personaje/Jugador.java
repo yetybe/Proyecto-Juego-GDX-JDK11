@@ -40,7 +40,7 @@ public class Jugador extends Entidad {
     	this.cadenciaAtaque = 0.5f; // medio segundo
     	this.temporizadorDisparo = 0f;
     	this.herido = false;
-    	this.tiempoHeridoMax = 50;
+    	this.tiempoHeridoMax = 80;
     	this.soundBala = soundBala;
     	this.sonidoHerido = sonidoHerido;
     	this.txBala = txBala;
@@ -96,8 +96,7 @@ public class Jugador extends Entidad {
         }
         
     }  //
-
-    
+ 
     public void draw(SpriteBatch batch) {
         if (muerto) return;
 
@@ -110,14 +109,6 @@ public class Jugador extends Entidad {
         }
     }
 
-    public void  setPosicionSpr(int x , int y){ 
-    	if (godMode) return;
-    	float nuevaXpos = spr.getX() + x;
-    	float nuevaYpos = spr.getY() + y;
-    	spr.setPosition(nuevaXpos ,nuevaYpos );
-
-    }
-    
     public boolean ganarXp(int cantidadXp) {
     	expJugador += cantidadXp;
     	boolean subirNivel = false;

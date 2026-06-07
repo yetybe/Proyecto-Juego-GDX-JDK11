@@ -331,6 +331,5 @@ public class PantallaJuego implements Screen {
 		this.gameMusic.dispose();
 		this.txJugador.dispose();     
 	    this.txBalaJugador.dispose(); 
-	}
-   
+	} 
 }
