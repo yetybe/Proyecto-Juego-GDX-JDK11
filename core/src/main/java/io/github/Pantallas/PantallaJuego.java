@@ -265,7 +265,7 @@ public class PantallaJuego implements Screen {
 	private void balaEnemigaColisionJugador() {
 	    for (Bullet bala : balasEnemigas) {
 	        if (bala.getArea().overlaps(jugadorPersonaje.getArea())) {
-	            jugadorPersonaje.recibirDaño(2); 	            
+	            jugadorPersonaje.recibirDaño(1); 	            
 	            bala.setDestroyed(true);
 	        }
 	    }

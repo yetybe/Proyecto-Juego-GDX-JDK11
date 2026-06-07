@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import io.github.Pantallas.PantallaJuego;
 
 public class EnemigoMelee extends Enemigo{
@@ -24,7 +23,6 @@ public class EnemigoMelee extends Enemigo{
     public void update(PantallaJuego juego) {
         if (muerto) return;
 
-        // 1. Necesitamos saber dónde está el jugador
         Jugador jugador = juego.getJugador();
         
         if (jugador != null && !jugador.estaMuerto()) {
@@ -32,14 +30,12 @@ public class EnemigoMelee extends Enemigo{
         	if (tiempoFaltante > 0) {
                 tiempoFaltante -= Gdx.graphics.getDeltaTime();
             }
-        	// 2. El enemigo mismo evalúa la colisión (Overlap)
             if (this.getArea().overlaps(jugador.getArea())) {
                 if (tiempoFaltante <= 0) {
                     this.atacar(juego);
-                    tiempoFaltante = tiempoEntreAtaques; // Reinicia el temporizador
+                    tiempoFaltante = tiempoEntreAtaques;
                 }
             } else {
-                // 3. Si no están chocando, se mueve hacia el jugador
                 float dx = jugador.getX() - this.spr.getX();
                 float dy = jugador.getY() - this.spr.getY();
                 
@@ -50,17 +46,14 @@ public class EnemigoMelee extends Enemigo{
                 
                 this.spr.setPosition(nuevaX, nuevaY);
             }
-        
         }
     }
 	
 	@Override
 	public void atacar(PantallaJuego juego) {
-		// Ejecuta el daño
 		Jugador pjJugador = juego.getJugador();
 		pjJugador.recibirDaño(this.getDañoAtaque());
         
-        // Ejecuta su propio sonido
         if (this.getSonidoAtq() != null) {
             this.getSonidoAtq().play();
         }
