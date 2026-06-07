@@ -20,7 +20,6 @@ import io.github.Main.SpaceNavigation;
 import io.github.Personaje.Bullet;
 import io.github.Personaje.Enemigo;
 import io.github.Personaje.Jugador;
-import io.github.Template.*;
 
 public class PantallaJuego implements Screen {
 	
@@ -52,7 +51,7 @@ public class PantallaJuego implements Screen {
 
 	// Temporizador de hordas
 	private float tiempoParaSpawn = 0;
-    private float intervaloSpawn = 10.0f;
+    private float intervaloSpawn = 2.0f;
 
 
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, boolean isDeveloperMode) {
@@ -95,15 +94,14 @@ public class PantallaJuego implements Screen {
 		
 	    // cargar imagen de la nave, 64x64   
 		jugadorPersonaje = new Jugador(
-				Gdx.graphics.getWidth() / 2 - 50,                     // 1. int x
+			    Gdx.graphics.getWidth() / 2 - 50,                     // 1. int x
 			    30,                                                   // 2. int y
 			    new Texture(Gdx.files.internal("MainShip3.png")),     // 3. Texture tx
 			    new Texture(Gdx.files.internal("Rocket2.png")),       // 4. Texture txBala
 			    Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),   // 5. Sound sonidoHerido
 			    Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")) // 6. Sound soundBala
-		);
-		generarSiguienteHorda();
-	}    
+			);
+}    
 	
 	public void dibujaEncabezado() {
         game.getFont().getData().setScale(2f);        
@@ -127,7 +125,7 @@ public class PantallaJuego implements Screen {
 	@Override
     public void render(float delta) {
 
-        // devmode
+        // --- 1. COMANDOS DE DESARROLLADOR (CHEATS) ---
         if (isDeveloperMode) {
             // subir de nivel
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
@@ -146,26 +144,38 @@ public class PantallaJuego implements Screen {
         dibujarPantalla(); 
     }
  	 
+	
+	
 	// --- MÉTODOS HELPER PRIVADOS ---
 
     private void actualizarMundo(float delta) {
         tiempoParaSpawn += delta;
         if (tiempoParaSpawn >= intervaloSpawn) {
-        	generarSiguienteHorda();
+            generarEnemigoAleatorio();
             tiempoParaSpawn = 0;
         }
         
         jugadorPersonaje.update(this);
         
-        for (Bullet bala : balas) { bala.update(delta); }	
-        for (Bullet bala : balasEnemigas) { bala.update(delta); }
-        for (Enemigo enemigo : hordaEnemigos) { enemigo.update(this); }
+        for (Bullet bala : balas) {
+            bala.update(delta);
+        }
+        
+        for (Bullet bala : balasEnemigas) {
+            bala.update(delta);
+        }
+        
+        for (Enemigo enemigo : hordaEnemigos) {
+            enemigo.update(this);
+        }
     }
 
     private void gestionarColisionesYLimpieza() {
+        // Primero resolvemos quién se hizo daño
         balaColsionEnemigo(balas, hordaEnemigos);
         balaEnemigaColisionJugador();
         
+        // Se eliminan los cadáveres de los enemigos 
         Iterator<Enemigo> iterEnemigos = hordaEnemigos.iterator();
         while (iterEnemigos.hasNext()) {
         	Enemigo e = iterEnemigos.next();
@@ -226,29 +236,46 @@ public class PantallaJuego implements Screen {
             dispose(); 
         }
     }
-	 
-    private void generarSiguienteHorda() {
-        ronda++; 
-        TemplateHorda hordaAct;
-
-        if (ronda % 10 == 0) {
-            hordaAct = new HordaJefe1(); 
-        } else {
-        	Random r = new Random();
-            int seleccion = r.nextInt(4); // Genera un número entre 0, 1, 2, 3
-            
-            switch (seleccion) {
-                case 0: hordaAct = new Horda1(); break;
-                case 1: hordaAct = new Horda2(); break;
-                case 2: hordaAct = new Horda3(); break;
-                case 3: hordaAct = new Horda4(); break;
-                default: hordaAct = new Horda1(); break;
-            }
+	
+	private void generarEnemigoAleatorio() {
+        Random r = new Random();
+        int lado = r.nextInt(4); // 0: Arriba, 1: Abajo, 2: Izquierda, 3: Derecha
+        
+        int x = 0;
+        int y = 0;
+        int anchoPantalla = Gdx.graphics.getWidth();
+        int altoPantalla = Gdx.graphics.getHeight();
+        int margen = 50; // Distancia extra fuera de la pantalla
+        
+        switch(lado) {
+            case 0: // Arriba
+                x = r.nextInt(anchoPantalla);
+                y = altoPantalla + margen;
+                break;
+            case 1: // Abajo
+                x = r.nextInt(anchoPantalla);
+                y = -margen;
+                break;
+            case 2: // Izquierda
+                x = -margen;
+                y = r.nextInt(altoPantalla);
+                break;
+            case 3: // Derecha
+                x = anchoPantalla + margen;
+                y = r.nextInt(altoPantalla);
+                break;
         }
+        
+        int indiceAleatorio = r.nextInt(listaConstructoresEnemigos.size());
+        BuilderEnemigo constructorElegido = listaConstructoresEnemigos.get(indiceAleatorio);
+        
+        // 2. Aplicamos el Patrón Builder paso a paso
+        Enemigo nuevoEnemigo = constructorElegido.setPosicion(x, y).build();       
+        // 3. A la horda
+        hordaEnemigos.add(nuevoEnemigo);
 
-        hordaAct.armarHorda(this);
     }
-    
+	
 	public void balaColsionEnemigo(ArrayList<Bullet> balas , ArrayList<Enemigo> enemigos  ){
         
 		for (Bullet bala : balas) {
@@ -271,10 +298,6 @@ public class PantallaJuego implements Screen {
 	    }
 	}
 	
-	public void agregarEnemigo(Enemigo enemigoCreado) {
-        this.hordaEnemigos.add(enemigoCreado);
-    }
-	
     public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);
     }
@@ -291,9 +314,6 @@ public class PantallaJuego implements Screen {
         return this.jugadorPersonaje;
     }
     
-    public ArrayList<BuilderEnemigo> getConstructores() {
-        return this.listaConstructoresEnemigos;
-    }
 	
 	@Override
 	public void show() {
