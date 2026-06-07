@@ -31,7 +31,7 @@ public class BuilderDistancia implements BuilderEnemigo {
             // Ensambla el EnemigoDistancia con sus stats fijos por defecto
             int vidaBase = 4;
             float velBase = 1.2f; 
-            int dañoBase = 2;
+            int dañoBase = 1;
             int dropXp = 1;
             
             // Pasamos la texturaBala al constructor de EnemigoDistancia respetando el orden

@@ -32,7 +32,7 @@ public class Jugador extends Entidad {
     public Jugador(int x, int y, Texture tx, Texture txBala,Sound sonidoHerido , Sound soundBala) {
     	
     	//Vida Maxima(0) , Velocidad Maxima(1) y Daño Ataque(3)
-    	super(10,1.5f,2, new Sprite(tx));
+    	super(10,2f,2, new Sprite(tx));
     	
     	expJugador = 0;
     	lvlJugador = 1;

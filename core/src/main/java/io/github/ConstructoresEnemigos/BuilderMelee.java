@@ -30,7 +30,7 @@ public class BuilderMelee implements BuilderEnemigo {
             // Ensambla el EnemigoMelee con sus stats fijos por defecto
             int vidaBase = 7;
             float velBase = 1f;
-            int dañoBase = 2;
+            int dañoBase = 1;
             int dropXp = 1;
             
             // 2. Se pasan ambos sonidos (sonidoHerido y sonidoAtq) al constructor
