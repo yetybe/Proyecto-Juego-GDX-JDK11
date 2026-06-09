@@ -2,14 +2,12 @@ package io.github.ConstructoresEnemigos;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
 import io.github.Personaje.Enemigo;
 import io.github.Personaje.EnemigoJefe;
 
 public class BuilderJefe implements BuilderEnemigo {
     private int x, y;
-    private Texture texturaJefe; // Ahora recibe Texture
+    private Texture texturaJefe; 
     private Texture texturaBala;
     private Sound sonidoAtq;
 
@@ -29,19 +27,14 @@ public class BuilderJefe implements BuilderEnemigo {
     @Override
     public Enemigo build() {
         int vidaBase = 200; 
-        float velBase = 0.5f; // Lento pero imponente
+        float velBase = 1.5f; 
         int dañoBase = 2;
         int dropXp = 50;
         
-        // Creamos el Sprite internamente y lo enviamos al constructor
-        Sprite spriteJefe = new Sprite(texturaJefe);
-        EnemigoJefe jefe = new EnemigoJefe(vidaBase, velBase, dañoBase, dropXp, spriteJefe, sonidoAtq, texturaBala);
+        EnemigoJefe jefe = new EnemigoJefe(vidaBase, velBase, dañoBase, dropXp, texturaJefe, texturaBala, sonidoAtq, x, y);
         
-        // Asignamos tamaño y posición (Tu decisión #2)
         jefe.getSprite().setSize(260, 280); 
-        jefe.getSprite().setPosition(x, y);
         
-        // Reiniciamos para el siguiente spawn
         this.x = 0;
         this.y = 0;
         

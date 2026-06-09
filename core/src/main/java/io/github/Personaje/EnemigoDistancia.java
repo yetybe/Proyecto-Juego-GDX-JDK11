@@ -9,14 +9,14 @@ import io.github.Pantallas.PantallaJuego;
 
 public class EnemigoDistancia extends Enemigo {
         
-    private float rangoDeTiro = 250f; 
-    private float tiempoEntreDisparos = 1.5f; 
-    private float tiempoFaltante = 0f;
-    private Texture txBala;
+	protected float rangoDeTiro = 250f; 
+    protected float tiempoEntreDisparos = 1.5f; 
+    protected float tiempoFaltante = 0f;
+    protected Texture txBala;
+    protected float distanciaOrbita = 400f;
 
     public EnemigoDistancia(int vidaMax, float velocidad, int daño, int dropXp, Texture tx, Texture txBala, Sound sonidoAtaque, int x, int y) {         
         super(vidaMax, velocidad, daño, new Sprite(tx), sonidoAtaque, dropXp);
-        
         this.txBala = txBala; 
         this.spr.setPosition(x, y);
         this.spr.setBounds(x, y, 60, 60); 
