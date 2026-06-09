@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 
 import io.github.Main.SpaceNavigation;
 import io.github.Personaje.Jugador;
-import io.github.Strategy.*;
+import io.github.Strat.*;
 
 public class PantallaSubirLVL implements Screen {
 

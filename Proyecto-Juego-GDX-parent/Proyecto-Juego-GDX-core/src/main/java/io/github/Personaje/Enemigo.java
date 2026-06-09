@@ -8,7 +8,7 @@ import io.github.Pantallas.PantallaJuego;
 
 public  abstract class Enemigo extends Entidad {
 	
-	//Experiencia que se le da al jugador cuando muere el enemigo
+	//Experiencia que le da al jugador cuando muere el enemigo
 	protected int dropXp;
 	protected Sound sonidoAtaque;
 	public Enemigo(int vidaMax, float velocidadMax, int dañoAtaque, Sprite spr , Sound sonidoAtaque, int dropXp) {
@@ -17,6 +17,7 @@ public  abstract class Enemigo extends Entidad {
         this.sonidoAtaque = sonidoAtaque;
     }
     
+    // Todos los enemigos deberán saber cómo hacer daño al jugador
     public abstract void atacar(PantallaJuego juego);
     public int getDropXp() { return dropXp;}
     public Sound getSonidoAtq() {return sonidoAtaque;}

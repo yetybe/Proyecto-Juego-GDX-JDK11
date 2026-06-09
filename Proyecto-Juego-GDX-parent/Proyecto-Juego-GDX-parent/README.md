@@ -1,26 +1,4 @@
-#Space Navigation# (WIP)
-Un videojuego arcade de supervivencia espacial desarrollado en Java 11 con LibGDX. 
-El jugador debe esquivar y destruir oleadas de enemigos para subir de nivel y mejorar sus estadísticas.
-
-Antes de ejecutar!:
-- Cambiar el Text File Encoding a UTF-8
-- window -> preferences -> general -> workspace-> text file encoding -> other -> UTF-8
-
-FAQ: si sale error por missing assets, hay que moverlos desde la carpeta de Proyecto-Juego-GDX-parent -> assets, a la carpeta Proyecto-Juego-GDX-lwjgl3 -> assets.
-
-Ejecutar: 
-- Click derecho en Proyecto-Juego-GDX-lwjgl3 
-- Run As -> Java Application (si aparece una ventana llamada "select java aplication", dar click en ok)
-
-Controles y Mecánicas
-
-Movimiento: Teclas W, A, S, D. (arriba, izquierda, abajo, derecha respectivamente)
-
-Disparar: es automatico, sigue a tu cursor.
-
-Mejoras: Al subir de nivel, presiona las teclas numéricas (1 a 5) para escoger una mejora.
-
-Dev Mode: en la pantalla de inicio apreta 2, esto desbloquea facilidades para probar el juego.
+# Proyecto-Juego-GDX
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 

@@ -12,7 +12,6 @@ public class BuilderMelee implements BuilderEnemigo {
         private Sound sonidoHerido;
         private Sound sonidoAtq;
 
-        // 1. El constructor ahora recibe ambos sonidos
         public BuilderMelee(Texture tx, Sound sndAtaque) {
             this.textura = tx;
             this.sonidoAtq = sndAtaque;
@@ -27,13 +26,11 @@ public class BuilderMelee implements BuilderEnemigo {
 
         @Override
         public Enemigo build() {
-            // Ensambla el EnemigoMelee con sus stats fijos por defecto
             int vidaBase = 7;
             float velBase = 1f;
             int dañoBase = 2;
             int dropXp = 1;
             
-            // 2. Se pasan ambos sonidos (sonidoHerido y sonidoAtq) al constructor
             EnemigoMelee enemigo = new EnemigoMelee(vidaBase, velBase, dañoBase, dropXp, textura, sonidoAtq, x, y);
             
             this.x = 0;

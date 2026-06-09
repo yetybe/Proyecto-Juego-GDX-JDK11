@@ -24,6 +24,7 @@ public class EnemigoMelee extends Enemigo{
     public void update(PantallaJuego juego) {
         if (muerto) return;
 
+        // 1. Necesitamos saber dónde está el jugador
         Jugador jugador = juego.getJugador();
         
         if (jugador != null && !jugador.estaMuerto()) {
@@ -31,14 +32,14 @@ public class EnemigoMelee extends Enemigo{
         	if (tiempoFaltante > 0) {
                 tiempoFaltante -= Gdx.graphics.getDeltaTime();
             }
-        	// El enemigo mismo evalúa la colisión (Overlap)
+        	// 2. El enemigo mismo evalúa la colisión (Overlap)
             if (this.getArea().overlaps(jugador.getArea())) {
                 if (tiempoFaltante <= 0) {
                     this.atacar(juego);
                     tiempoFaltante = tiempoEntreAtaques; // Reinicia el temporizador
                 }
             } else {
-                // Si no están chocando, se mueve hacia el jugador
+                // 3. Si no están chocando, se mueve hacia el jugador
                 float dx = jugador.getX() - this.spr.getX();
                 float dy = jugador.getY() - this.spr.getY();
                 
