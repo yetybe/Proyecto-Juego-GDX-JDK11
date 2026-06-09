@@ -13,9 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.github.ConstructoresEnemigos.BuilderDistancia;
-import io.github.ConstructoresEnemigos.BuilderEnemigo;
-import io.github.ConstructoresEnemigos.BuilderMelee;
+import io.github.ConstructoresEnemigos.*;
 import io.github.Main.SpaceNavigation;
 import io.github.Personaje.Bullet;
 import io.github.Personaje.Enemigo;
@@ -49,6 +47,8 @@ public class PantallaJuego implements Screen {
     
 	private  ArrayList<BuilderEnemigo> listaConstructoresEnemigos = new ArrayList<>();
 	private  ArrayList<Enemigo> hordaEnemigos = new ArrayList<>();
+	
+	public int jefesVivos = 0;
 
 	// Temporizador de hordas
 	private float tiempoParaSpawn = 0;
@@ -64,6 +64,8 @@ public class PantallaJuego implements Screen {
 		//inicializar recursos jugador
 		txJugador = new Texture(Gdx.files.internal("MainShip3.png"));
 		txBalaJugador = new Texture(Gdx.files.internal("Rocket2.png"));
+		Texture txJefe = new Texture(Gdx.files.internal("Jefe.png"));
+		
 
 		jugadorPersonaje = new Jugador(
 		        Gdx.graphics.getWidth() / 2 - 50,                     
@@ -90,6 +92,7 @@ public class PantallaJuego implements Screen {
 		txtBalaEnemiga = new Texture(Gdx.files.internal("BulletEnemiga.png"));
 		this.listaConstructoresEnemigos.add(new BuilderMelee(txEnemigoMelee, sonidoDañoEnemigoMelee ));
 		this.listaConstructoresEnemigos.add(new BuilderDistancia(txtEnemigoDistancia, txtBalaEnemiga, Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))));
+		this.listaConstructoresEnemigos.add(new BuilderJefe(txJefe, txtBalaEnemiga, Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))));	
 		gameMusic.setVolume(0.5f);
 		gameMusic.play();
 		
@@ -149,10 +152,12 @@ public class PantallaJuego implements Screen {
 	// --- MÉTODOS HELPER PRIVADOS ---
 
     private void actualizarMundo(float delta) {
-        tiempoParaSpawn += delta;
-        if (tiempoParaSpawn >= intervaloSpawn) {
-        	generarSiguienteHorda();
-            tiempoParaSpawn = 0;
+    	if (jefesVivos <= 0) {
+            tiempoParaSpawn += delta;
+            if (tiempoParaSpawn >= intervaloSpawn) {
+                generarSiguienteHorda();
+                tiempoParaSpawn = 0;
+            }
         }
         
         jugadorPersonaje.update(this);
@@ -168,12 +173,20 @@ public class PantallaJuego implements Screen {
         
         Iterator<Enemigo> iterEnemigos = hordaEnemigos.iterator();
         while (iterEnemigos.hasNext()) {
-        	Enemigo e = iterEnemigos.next();
+            Enemigo e = iterEnemigos.next();
             if (e.isMuerto()) {
-            	if (jugadorPersonaje.ganarXp(e.getDropXp())) {
-            		game.setScreen(new PantallaSubirLVL(game, this, jugadorPersonaje));                	}
-            	iterEnemigos.remove(); 
+                
+                if (e instanceof io.github.Personaje.EnemigoJefe) {
+                    jefesVivos--;
+                }
+
+                if (jugadorPersonaje.ganarXp(e.getDropXp())) {
+                    game.setScreen(new PantallaSubirLVL(game, this, jugadorPersonaje));                    
+                }
+                iterEnemigos.remove(); 
             }
+        
+            
         }
         
         Iterator<Bullet> iterBalas = balas.iterator();
@@ -181,14 +194,14 @@ public class PantallaJuego implements Screen {
         	if(iterBalas.next().isDestroyed()) {
         		iterBalas.remove();
         	}
-        }   
+        } 
         
         Iterator<Bullet> iterEnemigasBullet = balasEnemigas.iterator();
         while(iterEnemigasBullet.hasNext()){
         	if(iterEnemigasBullet.next().isDestroyed()) {
         		iterEnemigasBullet.remove();
         	}
-        }  
+        }
     }
 
     public void dibujarPantalla() {

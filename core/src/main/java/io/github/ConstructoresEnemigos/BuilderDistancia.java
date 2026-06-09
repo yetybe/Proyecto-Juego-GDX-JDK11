@@ -9,10 +9,9 @@ import io.github.Personaje.EnemigoDistancia;
 public class BuilderDistancia implements BuilderEnemigo {
         private int x, y;
         private Texture textura;
-        private Texture texturaBala; // NUEVO: Atributo para guardar la imagen del proyectil
+        private Texture texturaBala;
         private Sound sonidoAtq;
 
-        // Actualizamos el constructor para recibir ambas texturas (enemigo y bala)
         public BuilderDistancia(Texture tx, Texture txBala, Sound snd) {
             this.textura = tx;
             this.texturaBala = txBala; 
@@ -28,16 +27,13 @@ public class BuilderDistancia implements BuilderEnemigo {
 
         @Override
         public Enemigo build() {
-            // Ensambla el EnemigoDistancia con sus stats fijos por defecto
             int vidaBase = 4;
             float velBase = 1.2f; 
             int dañoBase = 1;
             int dropXp = 1;
             
-            // Pasamos la texturaBala al constructor de EnemigoDistancia respetando el orden
             EnemigoDistancia enemigo = new EnemigoDistancia(vidaBase, velBase, dañoBase, dropXp, textura, texturaBala, sonidoAtq, x, y);
-            
-            // Resetea las coordenadas para el próximo enemigo
+
             this.x = 0;
             this.y = 0;
             
