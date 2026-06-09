@@ -151,21 +151,28 @@ public class PantallaJuego implements Screen {
  	 
 	// --- MÉTODOS HELPER PRIVADOS ---
 
-    private void actualizarMundo(float delta) {
-    	if (jefesVivos <= 0) {
-            tiempoParaSpawn += delta;
-            if (tiempoParaSpawn >= intervaloSpawn) {
-                generarSiguienteHorda();
-                tiempoParaSpawn = 0;
-            }
-        }
-        
-        jugadorPersonaje.update(this);
-        
-        for (Bullet bala : balas) { bala.update(delta); }	
-        for (Bullet bala : balasEnemigas) { bala.update(delta); }
-        for (Enemigo enemigo : hordaEnemigos) { enemigo.update(this); }
-    }
+	private void actualizarMundo(float delta) {
+	    if (jefesVivos <= 0) {
+	        tiempoParaSpawn += delta;
+	        
+	        if (tiempoParaSpawn >= intervaloSpawn) {
+	            generarSiguienteHorda();
+	            tiempoParaSpawn = 0;
+	        } 
+	        else if (hordaEnemigos.isEmpty()) {
+	            generarSiguienteHorda();
+	            generarSiguienteHorda();
+	            
+	            tiempoParaSpawn = 0; 
+	        }
+	    }
+	    
+	    jugadorPersonaje.update(this);
+	    
+	    for (Bullet bala : balas) { bala.update(delta); }    
+	    for (Bullet bala : balasEnemigas) { bala.update(delta); }
+	    for (Enemigo enemigo : hordaEnemigos) { enemigo.update(this); }
+	}
 
     private void gestionarColisionesYLimpieza() {
         balaColsionEnemigo(balas, hordaEnemigos);
@@ -285,8 +292,21 @@ public class PantallaJuego implements Screen {
 	}
 	
 	public void agregarEnemigo(Enemigo enemigoCreado) {
-        this.hordaEnemigos.add(enemigoCreado);
-    }
+	    int nivelJugador = jugadorPersonaje.getLvl();
+	    
+	    if (nivelJugador > 1 || ronda > 1) {
+
+	        int vidaExtra = (nivelJugador * 4) + (ronda * 3); 
+	        
+	        // formula alternativa 	
+	        // int vidaExtra = (int)(Math.pow(nivelJugador, 1.5)) + (ronda * 4);
+	        
+	        enemigoCreado.setVidaMax(enemigoCreado.getVidaMax() + vidaExtra);
+	        enemigoCreado.setVidaActual(enemigoCreado.getVidaMax());
+	    }
+
+	    this.hordaEnemigos.add(enemigoCreado);
+	}
 	
     public boolean agregarBala(Bullet bb) {
     	return balas.add(bb);

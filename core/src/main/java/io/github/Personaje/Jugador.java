@@ -110,15 +110,16 @@ public class Jugador extends Entidad {
     }
 
     public boolean ganarXp(int cantidadXp) {
-    	expJugador += cantidadXp;
-    	boolean subirNivel = false;
+        expJugador += cantidadXp;
+        boolean subirNivel = false;
 
-        // Mientras tenga suficiente XP para subir (usamos while por si gana mucha XP de golpe)
         while (expJugador >= lvlCap) {
-        	expJugador = 0;
-        	lvlJugador++;   	
-        	lvlCap = (int)(lvlCap *= 1.4f);
-        	subirNivel = true;
+            expJugador -= lvlCap; 
+            lvlJugador++;       
+            lvlCap = (int)(lvlCap * 1.4f);
+            subirNivel = true;
+            
+            this.vidaActual = this.vidaMax; 
         }
         return subirNivel;
     }
