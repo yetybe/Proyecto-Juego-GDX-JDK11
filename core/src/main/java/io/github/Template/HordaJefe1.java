@@ -26,9 +26,9 @@ public class HordaJefe1 extends TemplateHorda{
 
     }
 	@Override
-    protected void generarEnemigosDistancia(PantallaJuego juego) {
-
-    }
+    protected void generarEnemigosDistancia(PantallaJuego juego) {} //no se generan
+	
+	
 	@Override
     protected void generarJefe(PantallaJuego juego) {
 		BuilderEnemigo builderJefe = juego.getConstructores().get(2);

@@ -116,7 +116,7 @@ public class PantallaJuego implements Screen {
         
         int margenSuperiorY = altoPantalla - 20; 
 
-        CharSequence strVida = "Vida: " + jugadorPersonaje.getVidaActual() + " | Ronda: " + ronda;
+        CharSequence strVida = "Vida: " + (int)jugadorPersonaje.getVidaActual() + " | Ronda: " + ronda;
         game.getFont().draw(batch, strVida, 20, margenSuperiorY);
         
         CharSequence strExp = "Exp: " + jugadorPersonaje.getExp() + " / " + jugadorPersonaje.getLvlCap();
@@ -294,12 +294,9 @@ public class PantallaJuego implements Screen {
 	public void agregarEnemigo(Enemigo enemigoCreado) {
 	    int nivelJugador = jugadorPersonaje.getLvl();
 	    
-	    if (nivelJugador > 1 || ronda > 1) {
-
-	        int vidaExtra = (nivelJugador * 4) + (ronda * 3); 
-	        
-	        // formula alternativa 	
-	        // int vidaExtra = (int)(Math.pow(nivelJugador, 1.5)) + (ronda * 4);
+	    if (nivelJugador > 1 || ronda > 5) {
+	    	// formula dificultad
+	        float vidaExtra = (float) ((nivelJugador * 1.15) + (ronda * 1.1));
 	        
 	        enemigoCreado.setVidaMax(enemigoCreado.getVidaMax() + vidaExtra);
 	        enemigoCreado.setVidaActual(enemigoCreado.getVidaMax());

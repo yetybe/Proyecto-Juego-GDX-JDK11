@@ -39,5 +39,5 @@ public class Horda3 extends TemplateHorda{
     }
 
     @Override
-    protected void generarEnemigosDistancia(PantallaJuego juego) {}
+    protected void generarEnemigosDistancia(PantallaJuego juego) {} // no se generan  
 }

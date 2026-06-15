@@ -9,14 +9,14 @@ import io.github.Pantallas.PantallaJuego;
 
 public abstract class Entidad {
 	
-    protected int vidaMax;
-    protected int vidaActual;
+    protected float vidaMax;
+    protected float vidaActual;
     protected float velocidadMax;
-    protected int dañoAtaque;
+    protected float dañoAtaque;
     protected Sprite spr;
     protected boolean muerto;
     
-    public Entidad(int vidaMax, float velocidadMax, int dañoAtaque, Sprite spr) {
+    public Entidad(float vidaMax, float velocidadMax, int dañoAtaque, Sprite spr) {
         this.vidaMax = vidaMax;
         this.vidaActual = vidaMax; 
         this.velocidadMax = velocidadMax;
@@ -28,7 +28,7 @@ public abstract class Entidad {
     public abstract void update(PantallaJuego juego);
     public void draw(SpriteBatch batch) {spr.draw(batch);}
     
-    public void recibirDaño(int dañoRecibido) {
+    public void recibirDaño(float dañoRecibido) {
         if (muerto) return;
 
         vidaActual -= dañoRecibido;
@@ -40,7 +40,7 @@ public abstract class Entidad {
     }
     
     public Rectangle getArea() {return this.spr.getBoundingRectangle();}
-    public int getDañoAtaque() {return this.dañoAtaque;}
+    public float getDañoAtaque() {return this.dañoAtaque;}
     public boolean isMuerto() { return this.muerto; }
     public Sprite getSprite() { return this.spr; }
 }

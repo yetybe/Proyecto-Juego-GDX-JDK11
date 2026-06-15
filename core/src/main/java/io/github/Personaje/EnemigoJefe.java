@@ -9,8 +9,8 @@ public class EnemigoJefe extends EnemigoDistancia {
     public EnemigoJefe(int vida, float vel, int daño, int xp, Texture txJefe, Texture txBala, Sound sonidoAtq, int x, int y) {
         super(vida, vel, daño, xp, txJefe, txBala, sonidoAtq, x, y);
         
-        this.distanciaOrbita = 600f; 
-        this.tiempoEntreDisparos = 0.5f; 
+        this.distanciaOrbita = 800f; 
+        this.tiempoEntreDisparos = 0.8f; 
     }
 
     @Override

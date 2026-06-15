@@ -116,7 +116,7 @@ public class Jugador extends Entidad {
         while (expJugador >= lvlCap) {
             expJugador -= lvlCap; 
             lvlJugador++;       
-            lvlCap = (int)(lvlCap * 1.4f);
+            lvlCap = (int)(lvlCap * 1.2f); // en cuanto sube la exp necesaria para subir de nivel
             subirNivel = true;
             
             this.vidaActual = this.vidaMax; 
@@ -125,7 +125,7 @@ public class Jugador extends Entidad {
     }
     
     @Override
-    public void recibirDaño(int dañoRecibido) {
+    public void recibirDaño(float dañoRecibido) {
         if (godMode || herido || muerto) return;
         
         super.recibirDaño(dañoRecibido); 
@@ -149,8 +149,8 @@ public class Jugador extends Entidad {
     
     public boolean estaMuerto() {return !herido && muerto;}
     public boolean estaHerido() {return herido;}
-    public int getVidaMax() { return vidaMax;}
-    public int getVidaActual() {return vidaActual;}
+    public float getVidaMax() { return vidaMax;}
+    public float getVidaActual() {return vidaActual;}
     public int getX() {return (int) spr.getX();}
     public int getY() {return (int) spr.getY();}
     public int getLvl() { return lvlJugador;}
@@ -162,9 +162,9 @@ public class Jugador extends Entidad {
     public ModoDisparo getArma() {return armaActual;}
     
     public void setCadenciaAtaque(float cadencia) { this.cadenciaAtaque = cadencia; }
-    public void setDañoAtaque(int dmg) { dañoAtaque = dmg;}
-	public void setVidaMax(int Puntosvida) {vidaMax = Puntosvida;}
-	public void setVidaActual(int totalVida) {vidaActual = totalVida;}
+    public void setDañoAtaque(float dmg) { dañoAtaque = dmg;}
+	public void setVidaMax(float Puntosvida) {vidaMax = Puntosvida;}
+	public void setVidaActual(float totalVida) {vidaActual = totalVida;}
 	public void setVelocidadMax(float nuevaVel) {this.velocidadMax = nuevaVel;}
 	public void setEstrategiaDisparo(ModoDisparo nuevaArma) {
 	    this.armaActual = nuevaArma;

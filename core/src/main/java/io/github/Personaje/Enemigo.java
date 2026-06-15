@@ -9,7 +9,7 @@ public abstract class Enemigo extends Entidad {
     protected int dropXp;
     protected Sound sonidoAtaque;
 
-    public Enemigo(int vidaMax, float velocidadMax, int dañoAtaque, Sprite spr , Sound sonidoAtaque, int dropXp) {
+    public Enemigo(float vidaMax, float velocidadMax, int dañoAtaque, Sprite spr , Sound sonidoAtaque, int dropXp) {
         super(vidaMax, velocidadMax, dañoAtaque, spr);
         this.dropXp = dropXp;
         this.sonidoAtaque = sonidoAtaque;
@@ -19,15 +19,15 @@ public abstract class Enemigo extends Entidad {
     public int getDropXp() { return dropXp; }
     public Sound getSonidoAtq() { return sonidoAtaque; }
 
-    public int getVidaMax() { 
+    public float getVidaMax() { 
         return this.vidaMax; 
     }
     
-    public void setVidaMax(int nuevaVidaMax) { 
+    public void setVidaMax(float nuevaVidaMax) { 
         this.vidaMax = nuevaVidaMax; 
     }
     
-    public void setVidaActual(int nuevaVida) { 
+    public void setVidaActual(float nuevaVida) { 
         this.vidaActual = nuevaVida; 
     }
 }

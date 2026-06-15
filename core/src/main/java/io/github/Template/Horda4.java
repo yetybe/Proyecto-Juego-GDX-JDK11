@@ -9,12 +9,12 @@ import io.github.Pantallas.PantallaJuego;
 
 public class Horda4 extends TemplateHorda{
 	@Override
-    protected void generarEnemigosMelee(PantallaJuego juego) {}
+    protected void generarEnemigosMelee(PantallaJuego juego) {}// no se generan 
 
     @Override
     protected void generarEnemigosDistancia(PantallaJuego juego) {
     	Random r = new Random();
-        BuilderEnemigo builderMelee = juego.getConstructores().get(0); 
+        BuilderEnemigo builderDistancia = juego.getConstructores().get(0); 
         
         int ancho = Gdx.graphics.getWidth();
         int alto = Gdx.graphics.getHeight();
@@ -38,7 +38,7 @@ public class Horda4 extends TemplateHorda{
                 x = ancho + margen;
                 y = r.nextInt(alto);
             }
-            juego.agregarEnemigo(builderMelee.setPosicion(x, y).build());
+            juego.agregarEnemigo(builderDistancia.setPosicion(x, y).build());
         }
     }
 }
