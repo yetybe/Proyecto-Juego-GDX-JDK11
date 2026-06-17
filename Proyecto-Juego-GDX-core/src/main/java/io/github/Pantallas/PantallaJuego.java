@@ -32,6 +32,7 @@ public class PantallaJuego implements Screen {
 	private Sound explosionSound;
 	private Music gameMusic;
 	private int ronda;
+	private Texture txFondoJuego;
 	
 	//Recursos Jugador
 	private Jugador jugadorPersonaje;
@@ -92,7 +93,8 @@ public class PantallaJuego implements Screen {
 		this.listaConstructoresEnemigos.add(new BuilderDistancia(txtEnemigoDistancia, txtBalaEnemiga, Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))));
 		gameMusic.setVolume(0.5f);
 		gameMusic.play();
-		
+		//textura de fondo
+		this.txFondoJuego = new Texture(Gdx.files.internal("fondo_juego.jpg")); // NUEVO
 	    // cargar imagen de la nave, 64x64   
 		jugadorPersonaje = new Jugador(
 				Gdx.graphics.getWidth() / 2 - 50,                     // 1. int x
@@ -126,7 +128,11 @@ public class PantallaJuego implements Screen {
 	
 	@Override
     public void render(float delta) {
-
+		// Si presiona P o ESC, cambiamos a la pantalla de pausa pasando "this" (esta misma instancia de juego)
+	    if (Gdx.input.isKeyJustPressed(Input.Keys.P) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+	        game.setScreen(new PantallaPausa(game, this));
+	        return; // Cortamos el render para que no se ejecute el update del juego en este frame
+	    }
         // devmode
         if (isDeveloperMode) {
             // subir de nivel
@@ -196,6 +202,8 @@ public class PantallaJuego implements Screen {
         camera.update(); 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        
+        batch.draw(txFondoJuego, 0, 0, 1200, 800);
         
         dibujaEncabezado();
         jugadorPersonaje.draw(batch);
@@ -330,7 +338,8 @@ public class PantallaJuego implements Screen {
 		this.explosionSound.dispose();
 		this.gameMusic.dispose();
 		this.txJugador.dispose();     
-	    this.txBalaJugador.dispose(); 
+	    this.txBalaJugador.dispose();
+	    txFondoJuego.dispose();
 	}
    
 }
