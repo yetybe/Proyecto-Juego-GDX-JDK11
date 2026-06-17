@@ -12,14 +12,14 @@ public class SpaceNavigation extends Game {
     private BitmapFont font;
     private int highScore;    
 
-    // Instancia única estática 
+    // Instancia única estática
     private static SpaceNavigation instancia;
 
-    public SpaceNavigation() {
-        instancia = this;
+    private SpaceNavigation() {
+        // Constructor vacío
     }
 
-    //(Punto de acceso Singleton)
+    // Punto de acceso global 
     public static SpaceNavigation getInstancia() {
         if (instancia == null) {
             instancia = new SpaceNavigation();
@@ -47,6 +47,7 @@ public class SpaceNavigation extends Game {
     public void dispose() {
         batch.dispose();
         font.dispose();
+        instancia = null; 
     }
 
     public SpriteBatch getBatch() { return batch; }
