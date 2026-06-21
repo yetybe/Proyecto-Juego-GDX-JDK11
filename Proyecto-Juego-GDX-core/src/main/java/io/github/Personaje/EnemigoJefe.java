@@ -29,8 +29,8 @@ public class EnemigoJefe extends EnemigoDistancia {
         for (int i = -1; i <= 1; i++) {
             float angulo = anguloBase + (i * 0.2f); 
             
-            float velX = (float) Math.cos(angulo) * 250f; 
-            float velY = (float) Math.sin(angulo) * 250f;
+            float velX = (float) Math.cos(angulo) * 350f; 
+            float velY = (float) Math.sin(angulo) * 350f;
             
             juego.agregarBalaEnemiga(new Bullet(origenX, origenY, velX, velY, txBala, 15, 15));
         }
