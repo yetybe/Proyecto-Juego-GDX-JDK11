@@ -1,5 +1,5 @@
-#Space Navigation# (WIP)
-Un videojuego arcade de supervivencia espacial desarrollado en Java 11 con LibGDX. 
+Tiny Room Roguelike
+Un videojuego arcade de supervivencia desarrollado en Java 11 con LibGDX. 
 El jugador debe esquivar y destruir oleadas de enemigos para subir de nivel y mejorar sus estadísticas.
 
 Antes de ejecutar!:
