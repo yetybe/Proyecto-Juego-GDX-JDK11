@@ -72,7 +72,7 @@ public class PantallaJuego implements Screen {
 		        txJugador,      
 		        txBalaJugador,  
 		        Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),   
-		        Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))
+		        Gdx.audio.newSound(Gdx.files.internal("pop-sound.ogg"))
 		);
 		
 		batch = game.getBatch();
@@ -81,7 +81,7 @@ public class PantallaJuego implements Screen {
 		//inicializar assets; musica de fondo y efectos de sonido
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
 		explosionSound.setVolume(1,0.5f);
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav"));
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("game_music.mp3"));
 		
 		//Guardamos los Sprite y Sonidos de los enemigos
 		txEnemigoMelee = new Texture(Gdx.files.internal("MeleeEnemy.png"));       
@@ -90,7 +90,7 @@ public class PantallaJuego implements Screen {
 		txtEnemigoDistancia = new Texture(Gdx.files.internal("EnemigoDistancia.png"));
 		txtBalaEnemiga = new Texture(Gdx.files.internal("BulletEnemiga.png"));
 		this.listaConstructoresEnemigos.add(new BuilderMelee(txEnemigoMelee, sonidoDañoEnemigoMelee ));
-		this.listaConstructoresEnemigos.add(new BuilderDistancia(txtEnemigoDistancia, txtBalaEnemiga, Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"))));
+		this.listaConstructoresEnemigos.add(new BuilderDistancia(txtEnemigoDistancia, txtBalaEnemiga, Gdx.audio.newSound(Gdx.files.internal("pop-sound.ogg"))));
 		gameMusic.setVolume(0.5f);
 		gameMusic.play();
 		//textura de fondo
@@ -102,7 +102,7 @@ public class PantallaJuego implements Screen {
 			    new Texture(Gdx.files.internal("MainShip3.png")),     // 3. Texture tx
 			    new Texture(Gdx.files.internal("Rocket2.png")),       // 4. Texture txBala
 			    Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),   // 5. Sound sonidoHerido
-			    Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")) // 6. Sound soundBala
+			    Gdx.audio.newSound(Gdx.files.internal("pop-sound.ogg")) // 6. Sound soundBala
 		);
 		generarSiguienteHorda();
 	}    
