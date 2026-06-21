@@ -36,7 +36,7 @@ public class Jugador extends Entidad {
     	
     	expJugador = 0;
     	lvlJugador = 1;
-    	lvlCap = 20;
+    	lvlCap = 10;
     	this.cadenciaAtaque = 0.5f; // medio segundo
     	this.temporizadorDisparo = 0f;
     	this.herido = false;
@@ -49,7 +49,7 @@ public class Jugador extends Entidad {
     	
     	this.spr.setPosition(x, y);
     	//spr.setOriginCenter();
-    	this.spr.setBounds(x, y, 45, 45);
+    	this.spr.setBounds(x, y, 70, 70);
 
     }
     
@@ -60,14 +60,11 @@ public class Jugador extends Entidad {
         float x = spr.getX();
         float y = spr.getY();
 
-        // 1. MOVIMIENTO
         if (Gdx.input.isKeyPressed(Input.Keys.A)) x -= velocidadMax;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) x += velocidadMax;
         if (Gdx.input.isKeyPressed(Input.Keys.S)) y -= velocidadMax;     
         if (Gdx.input.isKeyPressed(Input.Keys.W)) y += velocidadMax;
         
-        // LÍMITES DE PANTALLA (Usando la cámara del Viewport virtual) ---
-        // Obtenemos el tamaño lógico del mundo (ej. 1200x800) multiplicando el viewport de la cámara
         float mundoAncho = juego.getCamera().viewportWidth;
         float mundoAlto = juego.getCamera().viewportHeight;
 
@@ -78,7 +75,7 @@ public class Jugador extends Entidad {
         
         spr.setPosition(x, y);
 
-        // 3. DISPARO
+
         temporizadorDisparo += Gdx.graphics.getDeltaTime();
 
         if (temporizadorDisparo >= cadenciaAtaque) {
@@ -89,7 +86,7 @@ public class Jugador extends Entidad {
             soundBala.play();
             temporizadorDisparo = 0f; 
         }
-        // 4. TEMPORIZADOR DE INMUNIDAD
+
         if (herido) {
             tiempoHerido--;
             if (tiempoHerido <= 0) {

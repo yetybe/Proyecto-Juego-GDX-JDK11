@@ -84,14 +84,11 @@ public class PantallaJuego implements Screen {
 		        Gdx.audio.newSound(Gdx.files.internal("pop-sound.ogg"))
 		);
 		
-		// Inicializar assets locales (efectos de sonido y texturas)
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
 		explosionSound.setVolume(1, 0.5f);
 		
-		// MODIFICADO: Llamamos al método central para iniciar la música global desde cero
 		game.iniciarMusicaJuego();
 		
-		// Guardamos los Sprite y Sonidos de los enemigos
 		txEnemigoMelee = new Texture(Gdx.files.internal("MeleeEnemy.png"));       
 		sonidoDañoEnemigoMelee = Gdx.audio.newSound(Gdx.files.internal("MeleeEnemy-DamageSound.mp3"));
 		
@@ -100,8 +97,7 @@ public class PantallaJuego implements Screen {
 		
 		this.listaConstructoresEnemigos.add(new BuilderMelee(txEnemigoMelee, sonidoDañoEnemigoMelee));
 		this.listaConstructoresEnemigos.add(new BuilderDistancia(txtEnemigoDistancia, txtBalaEnemiga, Gdx.audio.newSound(Gdx.files.internal("pop-sound.ogg"))));
-		
-		// Textura de fondo
+
 		this.txFondoJuego = new Texture(Gdx.files.internal("fondo_juego.jpg"));
 		
 		generarSiguienteHorda();
@@ -116,13 +112,13 @@ public class PantallaJuego implements Screen {
 		float margenSuperiorY = altoPantalla - 20; 
 
 		CharSequence strVida = "Vida: " + jugadorPersonaje.getVidaActual() + " | Ronda: " + ronda;
-		game.getFont().draw(batch, strVida, 20, margenSuperiorY);
+		game.getFont().draw(batch, strVida, 30, margenSuperiorY-20);
         
 		CharSequence strExp = "Exp: " + jugadorPersonaje.getExp() + " / " + jugadorPersonaje.getLvlCap();
-		game.getFont().draw(batch, strExp, (anchoPantalla / 2) - 80, margenSuperiorY);
+		game.getFont().draw(batch, strExp, (anchoPantalla / 2) - 80, margenSuperiorY-20);
 
 		CharSequence strLvl = "Nivel: " + jugadorPersonaje.getLvl();
-		game.getFont().draw(batch, strLvl, anchoPantalla - 150, margenSuperiorY);
+		game.getFont().draw(batch, strLvl, anchoPantalla - 150, margenSuperiorY-20);
 	}
 	
 	@Override
