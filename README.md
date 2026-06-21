@@ -23,6 +23,12 @@ Mejoras: Al subir de nivel, presiona las teclas numéricas (1 a 5) para escoger 
 
 Dev Mode: en la pantalla de inicio apreta 2, esto desbloquea facilidades para probar el juego.
 
+Fullscreen : apretando la tecla F se alterna.
+
+Quit: apretando ESC en el menu principal
+
+Pausa: apretando P o ESC en una partida. 
+
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
