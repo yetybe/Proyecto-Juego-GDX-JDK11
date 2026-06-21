@@ -20,21 +20,18 @@ public class EnemigoMelee extends Enemigo {
     public EnemigoMelee(int vidaMax , float velocidad , int daño, int dropXp, Texture tx, Sound sonidoAtaque, int x, int y) {         
         super(vidaMax, velocidad, daño, new Sprite(tx), sonidoAtaque, dropXp);
         
-        // 1. Forzamos estrictamente que la Hitbox física en el motor sea de 5x5
-        // ¡No agregues setSize() aquí abajo porque romperá este valor!
         this.spr.setBounds(x, y, TAMANO_HITBOX, TAMANO_HITBOX); 
     }
 
     @Override
-    public void draw(SpriteBatch batch) { // CORREGIDO: Usar SpriteBatch
-        // 2. Desacoplamos por completo el renderizado:
-        // Restamos la diferencia para que el gráfico grande quede perfectamente CENTRADO en la mini hitbox.
+    public void draw(SpriteBatch batch) {
+
         float offset = (TAMANO_VISUAL - TAMANO_HITBOX) / 2f;
 
         batch.draw(
             this.spr.getTexture(),              // La textura PNG original
-            this.spr.getX() - offset,           // Posición X visual perfectamente centrada
-            this.spr.getY() - offset,           // Posición Y visual perfectamente centrada
+            this.spr.getX() - offset,           // Posición X visual centrada
+            this.spr.getY() - offset,           // Posición Y visual centrada
             TAMANO_VISUAL,                      // Ancho real en pantalla
             TAMANO_VISUAL                       // Alto real en pantalla
         );

@@ -57,8 +57,6 @@ public class Jugador extends Entidad {
     public void update(PantallaJuego juego) {
         if (muerto) return; 
         
-
-        
         float x = spr.getX();
         float y = spr.getY();
 
@@ -68,11 +66,15 @@ public class Jugador extends Entidad {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) y -= velocidadMax;     
         if (Gdx.input.isKeyPressed(Input.Keys.W)) y += velocidadMax;
         
-        // 2. LÍMITES DE PANTALLA
+        // LÍMITES DE PANTALLA (Usando la cámara del Viewport virtual) ---
+        // Obtenemos el tamaño lógico del mundo (ej. 1200x800) multiplicando el viewport de la cámara
+        float mundoAncho = juego.getCamera().viewportWidth;
+        float mundoAlto = juego.getCamera().viewportHeight;
+
         if (x < 0) x = 0;
-        if (x + spr.getWidth() > Gdx.graphics.getWidth()) x = Gdx.graphics.getWidth() - spr.getWidth();
+        if (x + spr.getWidth() > mundoAncho) x = mundoAncho - spr.getWidth();
         if (y < 0) y = 0;
-        if (y + spr.getHeight() > Gdx.graphics.getHeight()) y = Gdx.graphics.getHeight() - spr.getHeight();
+        if (y + spr.getHeight() > mundoAlto) y = mundoAlto - spr.getHeight();
         
         spr.setPosition(x, y);
 
@@ -94,9 +96,7 @@ public class Jugador extends Entidad {
                 herido = false; // Se acaba la inmunidad
             }
         }
-        
-    }  //
-
+    }
     
     public void draw(SpriteBatch batch) {
         if (muerto) return;
