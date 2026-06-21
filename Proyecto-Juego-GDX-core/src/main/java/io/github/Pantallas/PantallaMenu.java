@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout; 
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.viewport.StretchViewport; 
+import com.badlogic.gdx.utils.viewport.Viewport;    
 
 import io.github.Main.SpaceNavigation;
 
@@ -14,6 +16,7 @@ public class PantallaMenu implements Screen {
 
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
+	private Viewport viewport; 
 	private Texture txFondoMenu; 
 	private GlyphLayout layout; 
 
@@ -21,7 +24,9 @@ public class PantallaMenu implements Screen {
 		this.game = game;
         
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1200, 800);
+		
+		viewport = new StretchViewport(1200, 800, camera);
+		viewport.apply();
 
 		this.txFondoMenu = new Texture(Gdx.files.internal("fondo_menu.png"));
 		this.layout = new GlyphLayout();
@@ -29,9 +34,10 @@ public class PantallaMenu implements Screen {
 
 	@Override
 	public void render(float delta) {
-	    ScreenUtils.clear(0, 0, 0.2f, 1);
-	    float anchoPantalla = camera.viewportWidth;
-	    float altoPantalla = camera.viewportHeight;
+	    ScreenUtils.clear(0, 0, 0, 1);
+	    
+	    float anchoPantalla = viewport.getWorldWidth();
+	    float altoPantalla = viewport.getWorldHeight();
 
 	    camera.update();
 	    game.getBatch().setProjectionMatrix(camera.combined);
@@ -46,10 +52,8 @@ public class PantallaMenu implements Screen {
 	    float xTitulo = (anchoPantalla - layout.width) / 2;
 	    float yTitulo = altoPantalla - 80; 
 
-	    // Dibujar título centrado
 	    game.getFont().draw(game.getBatch(), titulo, xTitulo, yTitulo);
 	    
-	    // Resto de opciones del menú
 	    game.getFont().draw(game.getBatch(), "Presiona [1] para Modo Normal", 100, 350);
 	    game.getFont().draw(game.getBatch(), "Presiona [2] para Modo Desarrollador", 100, 290);
 	    game.getFont().draw(game.getBatch(), "Presiona [F] para Pantalla Completa (ON/OFF)", 100, 230);
@@ -57,7 +61,6 @@ public class PantallaMenu implements Screen {
 	    
 	    game.getBatch().end();
 
-	    // Manejo de Inputs corregido estructuralmente
 	    if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
 	        iniciarJuego(false); 
 	    } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
@@ -76,7 +79,6 @@ public class PantallaMenu implements Screen {
 
 	private void iniciarJuego(boolean isDeveloper) {
 	    Screen ss = new PantallaJuego(game, 1, 10, isDeveloper); 
-	    ss.resize(1200, 800);
 	    game.setScreen(ss);
 	    dispose();
 	}
@@ -88,23 +90,12 @@ public class PantallaMenu implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+		viewport.update(width, height, true);
 	}
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-	}
+	@Override public void pause() {}
+	@Override public void resume() {}
+	@Override public void hide() {}
 
 	@Override
 	public void dispose() {
