@@ -46,4 +46,5 @@ public abstract class Entidad {
     public Rectangle getArea() {return this.spr.getBoundingRectangle();}
     public int getDañoAtaque() {return this.dañoAtaque;}
     public boolean isMuerto() { return this.muerto; }
+    public Sprite getSprite() { return this.spr; }
 }

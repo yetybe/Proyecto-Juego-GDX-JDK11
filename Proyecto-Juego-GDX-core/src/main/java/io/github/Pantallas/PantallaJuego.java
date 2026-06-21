@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.ConstructoresEnemigos.BuilderDistancia;
 import io.github.ConstructoresEnemigos.BuilderEnemigo;
 import io.github.ConstructoresEnemigos.BuilderMelee;
+import io.github.ConstructoresEnemigos.BuilderJefe;
 import io.github.Main.SpaceNavigation;
 import io.github.Personaje.Bullet;
 import io.github.Personaje.Enemigo;
@@ -27,51 +28,45 @@ import io.github.Template.*;
 
 public class PantallaJuego implements Screen {
 	
-	// Recursos para el loop game
 	private boolean isDeveloperMode;
 	private SpaceNavigation game;
 	private OrthographicCamera camera;	
 	private Viewport viewport; 
 	private SpriteBatch batch;
 	private Sound explosionSound;
-	// ELIMINADO: private Music gameMusic; ya no manejamos la música localmente aquí
+
 	private int ronda;
 	private Texture txFondoJuego;
 	
-	// Recursos Jugador
 	private Jugador jugadorPersonaje;
 	private ArrayList<Bullet> balas = new ArrayList<>();
 	private Texture txJugador;
 	private Texture txBalaJugador;
 	
-	// Recursos para la horda
 	private Texture txEnemigoMelee;
 	private Sound sonidoDañoEnemigoMelee;
-    
+	
 	private Texture txtEnemigoDistancia;
 	private Texture txtBalaEnemiga;
 	private ArrayList<Bullet> balasEnemigas = new ArrayList<>();
     
 	private ArrayList<BuilderEnemigo> listaConstructoresEnemigos = new ArrayList<>();
 	private ArrayList<Enemigo> hordaEnemigos = new ArrayList<>();
-
-	// Temporizador de hordas
-	private float tiempoParaSpawn = 0;
-	private float intervaloSpawn = 10.0f;
+	
+	public int jefesVivos = 0;
+	Texture txJefe = new Texture(Gdx.files.internal("Jefe.png"));
 
 	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, boolean isDeveloperMode) {
 		this.game = game;
 		this.ronda = ronda;
 		this.isDeveloperMode = isDeveloperMode;
 		
-		// Inicializar dimensiones virtuales fijas
 		camera = new OrthographicCamera();	
 		viewport = new FitViewport(1200, 800, camera); 
 		viewport.apply();
 		
 		batch = game.getBatch();
 		
-		// Inicializar recursos jugador utilizando las coordenadas del viewport virtual
 		txJugador = new Texture(Gdx.files.internal("MainShip3.png"));
 		txBalaJugador = new Texture(Gdx.files.internal("Rocket2.png"));
 
@@ -97,6 +92,7 @@ public class PantallaJuego implements Screen {
 		
 		this.listaConstructoresEnemigos.add(new BuilderMelee(txEnemigoMelee, sonidoDañoEnemigoMelee));
 		this.listaConstructoresEnemigos.add(new BuilderDistancia(txtEnemigoDistancia, txtBalaEnemiga, Gdx.audio.newSound(Gdx.files.internal("pop-sound.ogg"))));
+		this.listaConstructoresEnemigos.add(new BuilderJefe(txJefe, txtBalaEnemiga, Gdx.audio.newSound(Gdx.files.internal("pop-sound.ogg"))));
 
 		this.txFondoJuego = new Texture(Gdx.files.internal("fondo_juego.jpg"));
 		
@@ -144,12 +140,6 @@ public class PantallaJuego implements Screen {
 	}
  	 
 	private void actualizarMundo(float delta) {
-		tiempoParaSpawn += delta;
-		if (tiempoParaSpawn >= intervaloSpawn) {
-			generarSiguienteHorda();
-			tiempoParaSpawn = 0;
-		}
-        
 		jugadorPersonaje.update(this);
         
 		for (Bullet bala : balas) { bala.update(delta); }	
@@ -170,6 +160,10 @@ public class PantallaJuego implements Screen {
 				}
 				iterEnemigos.remove(); 
 			}
+		}
+
+		if (hordaEnemigos.isEmpty()) {
+			generarSiguienteHorda();
 		}
         
 		Iterator<Bullet> iterBalas = balas.iterator();
@@ -292,11 +286,8 @@ public class PantallaJuego implements Screen {
 		return this.listaConstructoresEnemigos;
 	}
 	
-	// --- CONTROL DETALLADO DEL FLUJO DE AUDIO ---
-
 	@Override
 	public void show() {
-		// MODIFICADO: Al regresar de la pausa, si la música existe y está detenida, la reanudamos sin reiniciar
 		Music musica = game.getMusicaPartida();
 		if (musica != null && !musica.isPlaying()) {
 			musica.play();
@@ -310,7 +301,6 @@ public class PantallaJuego implements Screen {
 
 	@Override
 	public void pause() {
-		// MODIFICADO: Si la aplicación pierde foco por completo en el sistema operativo
 		Music musica = game.getMusicaPartida();
 		if (musica != null && musica.isPlaying()) {
 			musica.pause();
@@ -327,7 +317,6 @@ public class PantallaJuego implements Screen {
 
 	@Override
 	public void hide() {
-		// MODIFICADO: Al cambiar a otra pantalla (como PantallaPausa), pausamos el hilo de audio global
 		Music musica = game.getMusicaPartida();
 		if (musica != null && musica.isPlaying()) {
 			musica.pause();
@@ -344,6 +333,5 @@ public class PantallaJuego implements Screen {
 		this.txtEnemigoDistancia.dispose();
 		this.txtBalaEnemiga.dispose();
 		txFondoJuego.dispose();
-		// ELIMINADO: gameMusic.dispose(); ya no se limpia aquí pues le pertenece a la clase base global
 	}
 }

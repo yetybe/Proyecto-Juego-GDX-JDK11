@@ -12,7 +12,7 @@ public class Horda1 extends TemplateHorda{
         BuilderEnemigo builderMelee = juego.getConstructores().get(0); 
         
         // i < (cantidad de enemigos)
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10 + juego.getJugador().getLvl(); i++) {
             int x = r.nextInt(Gdx.graphics.getWidth());
             int y = Gdx.graphics.getHeight() + 50 + r.nextInt(100);
 

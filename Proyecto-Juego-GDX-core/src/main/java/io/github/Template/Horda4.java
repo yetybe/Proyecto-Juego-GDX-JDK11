@@ -14,14 +14,14 @@ public class Horda4 extends TemplateHorda{
     @Override
     protected void generarEnemigosDistancia(PantallaJuego juego) {
     	Random r = new Random();
-        BuilderEnemigo builderMelee = juego.getConstructores().get(0); 
+        BuilderEnemigo builderDistancia = juego.getConstructores().get(0); 
         
         int ancho = Gdx.graphics.getWidth();
         int alto = Gdx.graphics.getHeight();
         int margen = 100;
         
         // i < (cantidad de enemigos)
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5 + juego.getJugador().getLvl(); i++) {
         	int x, y;
         	int borde = r.nextInt(4);
             
@@ -38,7 +38,7 @@ public class Horda4 extends TemplateHorda{
                 x = ancho + margen;
                 y = r.nextInt(alto);
             }
-            juego.agregarEnemigo(builderMelee.setPosicion(x, y).build());
+            juego.agregarEnemigo(builderDistancia.setPosicion(x, y).build());
         }
     }
 }
